@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+.game-info {
+    margin-bottom: 20px;
+}
+
+.score-display {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+.score-display .label {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+#score {
+    font-size: 1.5em;
+    color: #333;
+    font-weight: bold;
+}
+
+.game-board-container {
+    position: relative;
+    display: inline-block;
+    margin: 20px 0;
+}
+
+#gameBoard {
+    border: 3px solid #333;
+    background: #000;
+    display: block;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.game-over.hidden {
+    display: none;
+}
+
+.game-over-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.game-over-content h2 {
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+.game-over-content p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+#finalScore {
+    font-weight: bold;
+    color: #333;
+}
+
+#restartBtn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#restartBtn:hover {
+    background: #5568d3;
+}
+
+.controls-info {
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.controls-info p {
+    margin: 5px 0;
+}
+
