@@ -76,8 +76,64 @@ body {
 .landing-description {
     font-size: 1.1em;
     color: #777;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     line-height: 1.6;
+}
+
+.high-score-landing {
+    background: #f0f0f0;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    display: inline-block;
+}
+
+.high-score-landing .label {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+#landingHighScore {
+    font-size: 1.8em;
+    color: #333;
+    font-weight: bold;
+}
+
+.difficulty-selector {
+    margin-bottom: 30px;
+}
+
+.difficulty-selector label {
+    display: block;
+    margin-bottom: 10px;
+    color: #666;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.difficulty-select {
+    padding: 12px 20px;
+    font-size: 1em;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 200px;
+}
+
+.difficulty-select:hover {
+    border-color: #5568d3;
+    background: #f8f9ff;
+}
+
+.difficulty-select:focus {
+    outline: none;
+    border-color: #5568d3;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
 .play-button {

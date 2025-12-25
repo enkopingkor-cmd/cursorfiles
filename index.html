@@ -17,8 +17,37 @@
             <p class="landing-description">
                 Stack the falling blocks, clear lines, and challenge yourself in this timeless classic!
             </p>
-            <a href="game.html" class="play-button">Play</a>
+            <div class="high-score-landing">
+                <div class="label">High Score:</div>
+                <div id="landingHighScore">0</div>
+            </div>
+            <div class="difficulty-selector">
+                <label for="difficultySelect">Select Difficulty:</label>
+                <select id="difficultySelect" class="difficulty-select">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="expert">Expert</option>
+                </select>
+            </div>
+            <a href="game.html" class="play-button" id="playButton">Play</a>
         </div>
     </div>
+    <script>
+        // Load and display high score
+        const savedHighScore = localStorage.getItem('tetrisHighScore');
+        if (savedHighScore) {
+            document.getElementById('landingHighScore').textContent = savedHighScore;
+        }
+
+        // Handle difficulty selection and play button
+        const playButton = document.getElementById('playButton');
+        const difficultySelect = document.getElementById('difficultySelect');
+        
+        playButton.addEventListener('click', (e) => {
+            const difficulty = difficultySelect.value;
+            playButton.href = `game.html?difficulty=${difficulty}`;
+        });
+    </script>
 </body>
 </html>

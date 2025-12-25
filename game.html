@@ -14,6 +14,14 @@
                 <div class="label">Score:</div>
                 <div id="score">0</div>
             </div>
+            <div class="high-score-display">
+                <div class="label">High Score:</div>
+                <div id="highScore">0</div>
+            </div>
+            <div class="difficulty-display">
+                <div class="label">Difficulty:</div>
+                <div id="difficultyDisplay">Medium</div>
+            </div>
         </div>
         <div class="game-board-container">
             <canvas id="gameBoard" width="300" height="600"></canvas>
@@ -21,15 +29,35 @@
                 <div class="game-over-content">
                     <h2>Game Over</h2>
                     <p>Final Score: <span id="finalScore">0</span></p>
+                    <p>High Score: <span id="highScoreFinal">0</span></p>
                     <button id="restartBtn">Play Again</button>
                 </div>
+            </div>
+            <div id="pauseOverlay" class="pause-overlay hidden">
+                <div class="pause-content">
+                    <h2>PAUSED</h2>
+                    <button id="resumeBtn">Resume</button>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-controls">
+            <div class="mobile-controls-row">
+                <button id="mobileLeft" class="mobile-btn">←</button>
+                <button id="mobileRotate" class="mobile-btn">↻</button>
+                <button id="mobileRight" class="mobile-btn">→</button>
+            </div>
+            <div class="mobile-controls-row">
+                <button id="mobileDrop" class="mobile-btn mobile-btn-wide">↓ Drop</button>
+                <button id="mobilePause" class="mobile-btn mobile-btn-wide">⏸ Pause</button>
             </div>
         </div>
         <div class="controls-info">
             <p><strong>Controls:</strong></p>
-            <p>← → Move | ↓ Soft Drop | ↑ Rotate</p>
+            <p>← → Move | ↓ Soft Drop | ↑ Rotate | P Pause</p>
+            <button id="muteBtn" class="mute-btn">🔊 Sound</button>
         </div>
     </div>
+    <script src="sounds.js"></script>
     <script src="game.js"></script>
 </body>
 </html>

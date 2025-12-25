@@ -30,9 +30,15 @@ h1 {
 
 .game-info {
     margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.score-display {
+.score-display,
+.high-score-display,
+.difficulty-display {
     display: inline-block;
     background: #f0f0f0;
     padding: 15px 30px;
@@ -40,13 +46,17 @@ h1 {
     font-size: 1.2em;
 }
 
-.score-display .label {
+.score-display .label,
+.high-score-display .label,
+.difficulty-display .label {
     font-weight: bold;
     color: #666;
     margin-bottom: 5px;
 }
 
-#score {
+#score,
+#highScore,
+#difficultyDisplay {
     font-size: 1.5em;
     color: #333;
     font-weight: bold;
@@ -78,15 +88,36 @@ h1 {
     border-radius: 5px;
 }
 
-.game-over.hidden {
+.game-over.hidden,
+.pause-overlay.hidden {
     display: none;
 }
 
-.game-over-content {
+.game-over-content,
+.pause-content {
     background: white;
     padding: 30px;
     border-radius: 10px;
     text-align: center;
+}
+
+.pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.pause-content h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 2em;
 }
 
 .game-over-content h2 {
@@ -104,7 +135,8 @@ h1 {
     color: #333;
 }
 
-#restartBtn {
+#restartBtn,
+#resumeBtn {
     background: #667eea;
     color: white;
     border: none;
@@ -115,7 +147,8 @@ h1 {
     transition: background 0.3s;
 }
 
-#restartBtn:hover {
+#restartBtn:hover,
+#resumeBtn:hover {
     background: #5568d3;
 }
 
@@ -127,5 +160,74 @@ h1 {
 
 .controls-info p {
     margin: 5px 0;
+}
+
+.mute-btn {
+    margin-top: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.mute-btn:hover {
+    background: #5568d3;
+}
+
+/* Mobile Controls */
+.mobile-controls {
+    display: none;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.mobile-controls-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.mobile-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    touch-action: manipulation;
+    user-select: none;
+    min-width: 60px;
+    min-height: 50px;
+}
+
+.mobile-btn-wide {
+    flex: 1;
+    max-width: 200px;
+}
+
+.mobile-btn:active {
+    background: #5568d3;
+    transform: scale(0.95);
+}
+
+/* Show mobile controls on mobile devices */
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-controls {
+        display: none;
+    }
 }
 
