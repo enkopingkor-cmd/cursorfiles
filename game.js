@@ -171,49 +171,71 @@ function saveHighScore() {
     }
 }
 
-// Load top scores from localStorage
-function loadTopScores() {
-    const saved = localStorage.getItem('tetrisTopScores');
-    if (saved) {
+// Load top scores from API or localStorage
+async function loadTopScores() {
+    if (typeof getTopScores === 'function') {
         try {
-            topScores = JSON.parse(saved);
-            if (!Array.isArray(topScores)) {
-                topScores = [];
-            }
-        } catch (e) {
+            topScores = await getTopScores();
+        } catch (error) {
+            console.warn('Error loading scores:', error);
             topScores = [];
         }
     } else {
-        topScores = [];
+        // Fallback to localStorage if API not loaded
+        const saved = localStorage.getItem('tetrisTopScores');
+        if (saved) {
+            try {
+                topScores = JSON.parse(saved);
+                if (!Array.isArray(topScores)) {
+                    topScores = [];
+                }
+            } catch (e) {
+                topScores = [];
+            }
+        } else {
+            topScores = [];
+        }
     }
 }
 
-// Save top score to localStorage
-function saveTopScore(name, score) {
-    loadTopScores();
+// Save top score to API or localStorage
+async function saveTopScore(name, score) {
+    await loadTopScores();
+    
+    // Get current difficulty
+    const currentDifficulty = difficulty || 'medium';
     
     // Check if score qualifies for top 10
     if (topScores.length < 10 || score > topScores[topScores.length - 1].score) {
-        // Add new score
-        topScores.push({ name: name, score: score });
-        
-        // Sort by score descending
-        topScores.sort((a, b) => b.score - a.score);
-        
-        // Keep only top 10
-        topScores = topScores.slice(0, 10);
-        
-        // Save to localStorage
-        localStorage.setItem('tetrisTopScores', JSON.stringify(topScores));
+        if (typeof saveScore === 'function') {
+            try {
+                await saveScore(name, score, currentDifficulty);
+                // Reload scores after saving
+                await loadTopScores();
+            } catch (error) {
+                console.warn('Error saving score:', error);
+            }
+        } else {
+            // Fallback to localStorage if API not loaded
+            topScores.push({ name: name, score: score, timestamp: Date.now() });
+            topScores.sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                }
+                return (b.timestamp || 0) - (a.timestamp || 0);
+            });
+            topScores = topScores.slice(0, 10);
+            localStorage.setItem('tetrisTopScores', JSON.stringify(topScores));
+        }
     }
 }
 
 // Display leaderboard
-function displayLeaderboard() {
+async function displayLeaderboard() {
     const leaderboardList = document.getElementById('leaderboardList');
     if (!leaderboardList) return;
     
-    loadTopScores();
+    await loadTopScores();
     
     if (topScores.length === 0) {
         leaderboardList.innerHTML = '<p class="no-scores">No scores yet. Be the first!</p>';
@@ -459,13 +481,18 @@ function dropPiece() {
         if (collide(currentPiece, board)) {
             gameOver = true;
             saveHighScore();
-            saveTopScore(playerName, score);
             gameOverElement.classList.remove('hidden');
             finalScoreElement.textContent = score;
             if (highScoreFinalElement) {
                 highScoreFinalElement.textContent = highScore;
             }
-            displayLeaderboard();
+            // Save score and display leaderboard
+            saveTopScore(playerName, score).then(() => {
+                displayLeaderboard();
+            }).catch(() => {
+                // If save fails, still display current leaderboard
+                displayLeaderboard();
+            });
             soundManager.playGameOver();
         }
     }

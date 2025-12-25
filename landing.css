@@ -101,6 +101,73 @@ body {
     font-weight: bold;
 }
 
+.leaderboard-landing {
+    background: #f8f9ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    max-height: 400px;
+    overflow: hidden;
+    border: 2px solid #667eea;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+}
+
+.leaderboard-landing h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.leaderboard-list-landing {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.leaderboard-entry-landing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 5px;
+    border-left: 3px solid #667eea;
+    transition: all 0.2s;
+}
+
+.leaderboard-entry-landing:hover {
+    background: #f0f2ff;
+    transform: translateX(3px);
+}
+
+.leaderboard-entry-landing .rank {
+    font-weight: bold;
+    color: #667eea;
+    min-width: 30px;
+}
+
+.leaderboard-entry-landing .name {
+    flex: 1;
+    text-align: left;
+    margin-left: 10px;
+    color: #333;
+}
+
+.leaderboard-entry-landing .score {
+    font-weight: bold;
+    color: #333;
+    min-width: 80px;
+    text-align: right;
+}
+
+.leaderboard-list-landing .no-scores {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+}
+
 .name-input-container {
     margin-bottom: 25px;
 }

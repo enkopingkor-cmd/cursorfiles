@@ -21,6 +21,12 @@
                 <div class="label">High Score:</div>
                 <div id="landingHighScore">0</div>
             </div>
+            <div class="leaderboard-landing">
+                <h3>🏆 Top 10 Scorers</h3>
+                <div id="landingLeaderboard" class="leaderboard-list-landing">
+                    <p class="no-scores">Loading scores...</p>
+                </div>
+            </div>
             <div class="name-input-container">
                 <label for="playerNameInput">Enter Your Name:</label>
                 <input type="text" id="playerNameInput" class="name-input" placeholder="Player" maxlength="20">
@@ -37,12 +43,66 @@
             <a href="game.html" class="play-button" id="playButton">Play</a>
         </div>
     </div>
+    <script src="api.js"></script>
     <script>
         // Load and display high score
         const savedHighScore = localStorage.getItem('tetrisHighScore');
         if (savedHighScore) {
             document.getElementById('landingHighScore').textContent = savedHighScore;
         }
+
+        // Load and display leaderboard
+        async function loadLandingLeaderboard() {
+            const leaderboardList = document.getElementById('landingLeaderboard');
+            
+            // Try to use API if available, otherwise use localStorage
+            let topScores = [];
+            if (typeof getTopScores === 'function') {
+                try {
+                    topScores = await getTopScores();
+                } catch (error) {
+                    console.warn('Error loading scores from API:', error);
+                    // Fallback to localStorage
+                    const saved = localStorage.getItem('tetrisTopScores');
+                    if (saved) {
+                        try {
+                            topScores = JSON.parse(saved);
+                        } catch (e) {
+                            topScores = [];
+                        }
+                    }
+                }
+            } else {
+                // Use localStorage directly
+                const saved = localStorage.getItem('tetrisTopScores');
+                if (saved) {
+                    try {
+                        topScores = JSON.parse(saved);
+                    } catch (e) {
+                        topScores = [];
+                    }
+                }
+            }
+            
+            if (!Array.isArray(topScores) || topScores.length === 0) {
+                leaderboardList.innerHTML = '<p class="no-scores">No scores yet. Be the first!</p>';
+                return;
+            }
+            
+            let html = '';
+            topScores.forEach((entry, index) => {
+                html += `<div class="leaderboard-entry-landing">
+                    <span class="rank">${index + 1}.</span>
+                    <span class="name">${entry.name}</span>
+                    <span class="score">${entry.score} pts</span>
+                </div>`;
+            });
+            
+            leaderboardList.innerHTML = html;
+        }
+        
+        // Load leaderboard on page load
+        loadLandingLeaderboard();
 
         // Load saved player name
         const playerNameInput = document.getElementById('playerNameInput');
@@ -69,6 +129,23 @@
             const difficulty = difficultySelect.value;
             playButton.href = `game.html?difficulty=${difficulty}`;
         });
+        
+        // Reload leaderboard when returning to page
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                loadLandingLeaderboard();
+            }
+        });
+        
+        // Also reload when page gains focus (for better compatibility)
+        window.addEventListener('focus', () => {
+            loadLandingLeaderboard();
+        });
+        
+        // Reload leaderboard periodically to catch updates
+        setInterval(() => {
+            loadLandingLeaderboard();
+        }, 5000); // Reload every 5 seconds
     </script>
 </body>
 </html>
