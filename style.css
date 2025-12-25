@@ -135,6 +135,73 @@ h1 {
     color: #333;
 }
 
+.leaderboard-container {
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.leaderboard-container h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.leaderboard-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.leaderboard-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background: #f8f9ff;
+    border-radius: 5px;
+    border-left: 3px solid #667eea;
+    transition: all 0.2s;
+}
+
+.leaderboard-entry:hover {
+    background: #f0f2ff;
+    transform: translateX(3px);
+}
+
+.leaderboard-entry.current-score {
+    background: #e8ebff;
+    border-left-color: #f0a000;
+    font-weight: bold;
+}
+
+.leaderboard-entry .rank {
+    font-weight: bold;
+    color: #667eea;
+    min-width: 30px;
+}
+
+.leaderboard-entry .name {
+    flex: 1;
+    text-align: left;
+    margin-left: 10px;
+    color: #333;
+}
+
+.leaderboard-entry .score {
+    font-weight: bold;
+    color: #333;
+    min-width: 80px;
+    text-align: right;
+}
+
+.no-scores {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+}
+
 #restartBtn,
 #resumeBtn {
     background: #667eea;

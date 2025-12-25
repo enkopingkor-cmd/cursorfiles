@@ -21,6 +21,10 @@
                 <div class="label">High Score:</div>
                 <div id="landingHighScore">0</div>
             </div>
+            <div class="name-input-container">
+                <label for="playerNameInput">Enter Your Name:</label>
+                <input type="text" id="playerNameInput" class="name-input" placeholder="Player" maxlength="20">
+            </div>
             <div class="difficulty-selector">
                 <label for="difficultySelect">Select Difficulty:</label>
                 <select id="difficultySelect" class="difficulty-select">
@@ -40,11 +44,28 @@
             document.getElementById('landingHighScore').textContent = savedHighScore;
         }
 
+        // Load saved player name
+        const playerNameInput = document.getElementById('playerNameInput');
+        const savedName = localStorage.getItem('tetrisPlayerName');
+        if (savedName) {
+            playerNameInput.value = savedName;
+        }
+
+        // Save player name when changed
+        playerNameInput.addEventListener('input', () => {
+            const name = playerNameInput.value.trim() || 'Player';
+            localStorage.setItem('tetrisPlayerName', name);
+        });
+
         // Handle difficulty selection and play button
         const playButton = document.getElementById('playButton');
         const difficultySelect = document.getElementById('difficultySelect');
         
         playButton.addEventListener('click', (e) => {
+            // Save name before navigating
+            const name = playerNameInput.value.trim() || 'Player';
+            localStorage.setItem('tetrisPlayerName', name);
+            
             const difficulty = difficultySelect.value;
             playButton.href = `game.html?difficulty=${difficulty}`;
         });

@@ -125,6 +125,8 @@ let dropCounter = 0;
 let dropInterval = 1000; // milliseconds
 let lastTime = 0;
 let difficulty = 'medium';
+let playerName = 'Player';
+let topScores = [];
 
 // Difficulty settings
 const DIFFICULTY_SETTINGS = {
@@ -133,6 +135,22 @@ const DIFFICULTY_SETTINGS = {
     hard: { interval: 600, name: 'Hard' },
     expert: { interval: 300, name: 'Expert' }
 };
+
+// Load player name from localStorage
+function loadPlayerName() {
+    const saved = localStorage.getItem('tetrisPlayerName');
+    if (saved) {
+        playerName = saved.trim() || 'Player';
+    } else {
+        playerName = 'Player';
+    }
+}
+
+// Save player name to localStorage
+function savePlayerName(name) {
+    playerName = name.trim() || 'Player';
+    localStorage.setItem('tetrisPlayerName', playerName);
+}
 
 // Load high score from localStorage
 function loadHighScore() {
@@ -151,6 +169,74 @@ function saveHighScore() {
             highScoreElement.textContent = highScore;
         }
     }
+}
+
+// Load top scores from localStorage
+function loadTopScores() {
+    const saved = localStorage.getItem('tetrisTopScores');
+    if (saved) {
+        try {
+            topScores = JSON.parse(saved);
+            if (!Array.isArray(topScores)) {
+                topScores = [];
+            }
+        } catch (e) {
+            topScores = [];
+        }
+    } else {
+        topScores = [];
+    }
+}
+
+// Save top score to localStorage
+function saveTopScore(name, score) {
+    loadTopScores();
+    
+    // Check if score qualifies for top 10
+    if (topScores.length < 10 || score > topScores[topScores.length - 1].score) {
+        // Add new score
+        topScores.push({ name: name, score: score });
+        
+        // Sort by score descending
+        topScores.sort((a, b) => b.score - a.score);
+        
+        // Keep only top 10
+        topScores = topScores.slice(0, 10);
+        
+        // Save to localStorage
+        localStorage.setItem('tetrisTopScores', JSON.stringify(topScores));
+    }
+}
+
+// Display leaderboard
+function displayLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboardList');
+    if (!leaderboardList) return;
+    
+    loadTopScores();
+    
+    if (topScores.length === 0) {
+        leaderboardList.innerHTML = '<p class="no-scores">No scores yet. Be the first!</p>';
+        return;
+    }
+    
+    let html = '';
+    let currentScoreHighlighted = false;
+    topScores.forEach((entry, index) => {
+        // Highlight the current score if it matches (only highlight once)
+        const isCurrentScore = !currentScoreHighlighted && entry.name === playerName && entry.score === score;
+        if (isCurrentScore) {
+            currentScoreHighlighted = true;
+        }
+        const highlightClass = isCurrentScore ? ' current-score' : '';
+        html += `<div class="leaderboard-entry${highlightClass}">
+            <span class="rank">${index + 1}.</span>
+            <span class="name">${entry.name}</span>
+            <span class="score">${entry.score} pts</span>
+        </div>`;
+    });
+    
+    leaderboardList.innerHTML = html;
 }
 
 // Get difficulty from URL parameter
@@ -184,8 +270,10 @@ const mobileRotate = document.getElementById('mobileRotate');
 const mobileDrop = document.getElementById('mobileDrop');
 const mobilePause = document.getElementById('mobilePause');
 
-// Load high score on page load
+// Load player name and high score on page load
+loadPlayerName();
 loadHighScore();
+loadTopScores();
 if (highScoreElement) {
     highScoreElement.textContent = highScore;
 }
@@ -371,11 +459,13 @@ function dropPiece() {
         if (collide(currentPiece, board)) {
             gameOver = true;
             saveHighScore();
+            saveTopScore(playerName, score);
             gameOverElement.classList.remove('hidden');
             finalScoreElement.textContent = score;
             if (highScoreFinalElement) {
                 highScoreFinalElement.textContent = highScore;
             }
+            displayLeaderboard();
             soundManager.playGameOver();
         }
     }
@@ -453,6 +543,7 @@ restartBtn.addEventListener('click', () => {
     pauseOverlay.classList.add('hidden');
     dropCounter = 0;
     lastTime = 0;
+    loadPlayerName();
     loadHighScore();
     if (highScoreElement) {
         highScoreElement.textContent = highScore;
@@ -580,7 +671,9 @@ function gameLoop(time = 0) {
 // Initialize game
 board = createBoard();
 currentPiece = createPiece();
+loadPlayerName();
 loadHighScore();
+loadTopScores();
 if (highScoreElement) {
     highScoreElement.textContent = highScore;
 }
